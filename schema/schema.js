@@ -17,15 +17,29 @@ const prepare = (o) => {
 
 const typeDefs = [`
     type Query {
-        company: [Companies]
+        getCompanies: [Companies]
+        getCompany(_id: ID): Companies
     }
     type Companies {
         _id: ID
         name: String
+        abn: String
+        description: String
+        phone: String
         location: String
+        category: String
+        subcategory: String
     }
     type Mutation {
-        createCompany(name: String, location: String): Companies
+        createCompany(
+            name: String
+            abn: String
+            description: String
+            phone: String
+            location: String
+            category: String
+            subcategory: String
+        ): Companies
     }
     schema {
         query: Query
@@ -35,12 +49,15 @@ const typeDefs = [`
 
 const resolvers = {
     Query: {
-        company() {
+        getCompanies() {
             return Companies.find({})
+        },
+        getCompany(_, args) {
+            return Companies.findOne({ _id: args._id });
         }
     },
     Mutation: {
-        createCompany(root, args) {
+        createCompany(_, args) {
             const comp = new Companies(args)
             return new Promise((resolve, object) => {
                 comp.save((err) => {
