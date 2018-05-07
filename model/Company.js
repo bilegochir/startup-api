@@ -22,6 +22,12 @@ var companySchema = new Schema({
   },
   subcategory: {
     type: String
+  },
+  email: {
+    type: String
+  },
+  password: {
+    type: String
   }
 });
 
